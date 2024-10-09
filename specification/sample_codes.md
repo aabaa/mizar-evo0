@@ -5,7 +5,6 @@
 ```bash
 mml/
     function/
-        binop/
     algebra/
         structure/
         group/
@@ -32,11 +31,11 @@ mml/
     end
     ```
 
-## /mml/function/binop
-
 - binop.miz
 
     ```mizar
+    from .function thruport *;
+
     definition
       let S be 1-sorted;
       :: Dot operator is introduced
@@ -49,6 +48,8 @@ mml/
 - sorted.miz
 
     ```mizar
+    from mml.function.{function,binop} thruport *;
+
     definition
       :: Inherit all functors and attributes from set.
       :: This grammar rule is specialized for set.
@@ -103,7 +104,7 @@ mml/
 - magma.miz
 
     ```mizar
-    from sorted.miz throughport *
+    from .sorted thruport *
 
     definition
       :: Inherit all functors and attributes from 1-sorted.
@@ -135,7 +136,7 @@ mml/
 - loopstr.miz
 
     ```mizar
-    from magma.miz throughport *
+    from .magma throughport *
 
     definition
       struct LoopStr extends Magma
@@ -194,7 +195,7 @@ mml/
 - /mml/algebra/group/Group.miz
 
     ```mizar
-    from ../structure/loopstr.miz throughport *;
+    from ..structure.loopstr throughport *;
 
     definition
       let M be Magma;
@@ -241,7 +242,7 @@ mml/
 - /mml/algebra/ring/Ring.miz
 
     ```mizar
-    from ../group/group.miz throughport *;
+    from ..group.group throughport *;
 
     definition
       let R be DoubleLoopStr;
@@ -266,34 +267,3 @@ mml/
       (R qua MulLoopStr) is commutative;
     end
     ```
-
-## Modules and Namespaces
-
-```mizar
-:: Basic import syntax
-import /math/algebra/group;
-
-:: Relative imports
-import ./algebra/group
-
-:: Import multiple modules
-import math.algebra.{ring, field};
-
-:: Import a module with a renaming
-import math.algebra.module as md;
-
-:: from .. import syntax
-from math.algebra import magma;
-
-:: wildcard import 1
-from math.algebra.group import *;
-
-:: wildcard import 2
-from math.algebra.group.*;
-
-:: recursive wildcard import 1
-from math.algebra import **;
-
-:: recursive wildcard import 2
-from math.algebra.**;
-```
