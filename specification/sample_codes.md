@@ -34,7 +34,7 @@ mml/
 - binop.miz
 
     ```mizar
-    from .function thruport *;
+    import .function;
 
     definition
       let S be 1-sorted;
@@ -48,7 +48,7 @@ mml/
 - sorted.miz
 
     ```mizar
-    from mml.function.{function,binop} thruport *;
+    import mml.function.{function,binop};
 
     definition
       :: Inherit all functors and attributes from set.
@@ -104,7 +104,7 @@ mml/
 - magma.miz
 
     ```mizar
-    from .sorted thruport *
+    import .sorted;
 
     definition
       :: Inherit all functors and attributes from 1-sorted.
@@ -136,7 +136,7 @@ mml/
 - loopstr.miz
 
     ```mizar
-    from .magma throughport *
+    import .magma;
 
     definition
       struct LoopStr extends Magma
@@ -195,7 +195,7 @@ mml/
 - /mml/algebra/group/Group.miz
 
     ```mizar
-    from ..structure.loopstr throughport *;
+    import ..structure.loopstr;
 
     definition
       let M be Magma;
@@ -242,7 +242,7 @@ mml/
 - /mml/algebra/ring/Ring.miz
 
     ```mizar
-    from ..group.group throughport *;
+    import ..group.group;
 
     definition
       let R be DoubleLoopStr;
