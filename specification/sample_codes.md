@@ -7,17 +7,8 @@ mml/
     function/
     algebra/
         structure/
-        group/
-        ring/
-        field/
-        module/
-        vector/
     number/
-        natural/
-        integer/
-        rational/
-        real/
-        complex/
+        structure/
 ```
 
 ## /mml/function
@@ -35,10 +26,10 @@ mml/
 
     ```mizar
     import .function;
+    import mml.algebra.structure.sorted;
 
     definition
       let S be 1-sorted;
-      :: Dot operator is introduced
       mode BinOp of S is Function of [: S.carrier, S.carrier :], S.carrier;
     end
     ```
@@ -48,55 +39,88 @@ mml/
 - sorted.miz
 
     ```mizar
-    import mml.function.{function,binop};
+    import mml.function.function;
 
     definition
-      :: Inherit all functors and attributes from set.
       :: This grammar rule is specialized for set.
-      struct 1-sorted extends set
-      begin
-        field carrier inherits set -> set;
+      struct 1-sorted where
+        field carrier -> set;
+      end
+
+      :: Inherit all functors and attributes from set.
+      :: `it` means `set` itself.
+      :: Sometimes a `field ... inherits ...` syntax requires type conversion.
+      :: In the case, you have to prove the consistency of the type conversion
+      :: with a `correctness` statement.
+      :: `cluster` statements might be useful.
+      extend 1-sorted inherits set where
+        field carrier inherits it;
       end
     end
 
     definition
-      struct UnitStr extends 1-sorted
-      begin
+      struct UnitStr extends 1-sorted where
         field carrier -> set;
         property unit -> Element of the carrier;
       end
-    end
 
-    definition
-      struct ZeroStr extends UnitStr
-      begin
-        field carrier -> set;
-        property zero inherits unit -> Element of the carrier;
+      :: If some fields or properties of the base structure are not inherited,
+      :: the Mizar analyzer will give a error message.
+      extend UnitStr inherits 1-sorted where
+        field carrier inherits carrier;
       end
     end
 
     definition
-      struct OneStr extends UnitStr
-      begin
+      struct ZeroStr where
         field carrier -> set;
-        property one inherits unit -> Element of the carrier;
+        property zero -> Element of the carrier;
+      end
+
+      extend ZeroStr inherits UnitStr where
+        field carrier inherits carrier;
+        property zero inherits unit;
       end
     end
 
     definition
-      struct ZeroOneStr extends ZeroStr, OneStr
-      begin
+      struct OneStr where
+        field carrier -> set;
+        property one -> Element of the carrier;
+      end
+
+      extend OneStr extends UnitStr where
+        field carrier inherits carrier;
+        property one inherits unit;
+      end
+    end
+
+    definition
+      struct ZeroOneStr where
         field carrier -> set;
         property zero -> Element of the carrier;
         property one -> Element of the carrier;
       end
+
+      extend ZeroOneStr inherits ZeroStr where
+        field carrier inherits carrier;
+        property zero inherits zero;
+      end
+
+      extend ZeroOneStr inherits OneStr where
+        field carrier inherits carrier;
+        property one inherits one;
+      end
     end
 
     definition
-      struct 2-sorted extends 1-sorted
-      begin
+      struct 2-sorted where
         field carrier -> set;
         field carrier' -> set;
+      end
+
+      extend 2-sorted inherits 1-sorted where
+        field carrier inherits carrier;
       end
     end
     ```
@@ -107,27 +131,37 @@ mml/
     import .sorted;
 
     definition
-      :: Inherit all functors and attributes from 1-sorted.
-      struct Magma extends 1-sorted
-      begin
+      struct Magma where
         field carrier -> set;
         field binop -> BinOp of the carrier;
       end
-    end
 
-    definition
-      struct AddMagma extends Magma
-      begin
-        field carrier -> set;
-        field add inherits binop -> BinOp of the carrier;
+      extend Magma inherits 1-sorted where
+        field carrier inherits carrier;
       end
     end
 
     definition
-      struct MulMagma extends Magma
-      begin
+      struct AddMagma where
         field carrier -> set;
-        field mul inherits binop -> BinOp of the carrier;
+        field add -> BinOp of the carrier;
+      end
+
+      extend AddMagma inherits Magma where
+        field carrier inherits carrier;
+        field add inherits binop;
+      end
+    end
+
+    definition
+      struct MulMagma where
+        field carrier -> set;
+        field mul -> BinOp of the carrier;
+      end
+
+      extend MulMagma inherits Magma where
+        field carrier inherits carrier;
+        field mul inherits binop;
       end
     end
 
@@ -139,47 +173,82 @@ mml/
     import .magma;
 
     definition
-      struct LoopStr extends Magma
-      begin
+      struct LoopStr where
         field carrier -> set;
         field binop -> BinOp of the carrier;
         property unit -> Element of the carrier;
       end
 
+      extend LoopStr inherits Magma where
+        field carrier inherits carrier;
+        field binop inherits binop;
+      end
+      
       ::=
         The Mizar analyzer must check the consistency for diamond inheritance.
         It means the both following paths introduce the same fields or properties:
         Path 1: AddLoopStr.add -> LoopStr.binop -> Magma.binop
         Path 2: AddLoopStr.add -> AddMagma.add -> Magma.binop
       =::
-      struct AddLoopStr extends LoopStr, AddMagma
-      begin
+      struct AddLoopStr where
         field carrier -> set;
         field add inherits binop -> BinOp of the carrier;
         property one inherits unit -> Element of the carrier;
       end
 
-      struct MulLoopStr extends LoopStr, MulMagma
-      begin
-        field carrier -> set;
-        field mul inherits binop -> BinOp of the carrier;
-        property zero inherits unit -> Element of the carrier;
+      extend AddLoopStr inherits LoopStr where
+        field carrier inherits carrier;
+        field add inherits binop;
+        property one inherits unit;
       end
 
-      struct DoubleLoopStr extends AddLoopStr, MulLoopStr
-      begin
+      extend AddLoopStr inherits AddMagma where
+        field carrier inherits carrier;
+        field add inherits add;
+      end
+
+      struct MulLoopStr where
+        field carrier -> set;
+        field mul -> BinOp of the carrier;
+        property zero -> Element of the carrier;
+      end
+
+      extend MulLoopStr inherits LoopStr where
+        field carrier inherits carrier;
+        field mul inherits binop;
+        property zero inherits unit;
+      end
+
+      extend MulLoopStr inherits MulMagma where
+        field carrier inherits carrier;
+        field mul inherits mul;
+      end
+
+      struct DoubleLoopStr where
         field carrier -> set;
         field add -> BinOp of the carrier;
         field mul -> BinOp of the carrier;
         property zero -> Element of the carrier;
         property one -> Element of the carrier;
       end;
+
+      extend DoubleLoopStr inherits AddLoopStr where
+        field carrier inherits carrier;
+        field add inherits add;
+        property zero inherits zero;
+      end;
+
+      extend DoubleLoopStr inherits MulLoopStr where
+        field carrier inherits carrier;
+        field mul inherits mul;
+        property one inherits one;
+      end;
     end
 
     notation
       let A be AddLoopStr;
       let x,y be Element of AddLoopStr;
-      synonym x+y for M.binop(x,y);
+      synonym x+y for A.binop(x,y);
     end;
 
     notation
@@ -190,12 +259,10 @@ mml/
 
     ```
 
-## /mml/algebra/group
-
-- /mml/algebra/group/Group.miz
+- group.miz
 
     ```mizar
-    import ..structure.loopstr;
+    import .loopstr;
 
     definition
       let M be Magma;
@@ -209,7 +276,7 @@ mml/
         for x be Element of M holds
         M.binop(x,e) = x & M.binop(e,x) = x;
 
-      func id. M -> Element of M means
+      func id. M -> Element of unital M means
         for x be Element of M holds
         M.binop(x, it) = x & M.binop(it, x) = x;
       existence;
@@ -237,12 +304,10 @@ mml/
     end
     ```
 
-## /mml/algebra/ring
-
-- /mml/algebra/ring/Ring.miz
+- ring.miz
 
     ```mizar
-    import ..group.group;
+    import .group;
 
     definition
       let R be DoubleLoopStr;
@@ -267,3 +332,15 @@ mml/
       (R qua MulLoopStr) is commutative;
     end
     ```
+
+- field.miz
+- module.miz
+- vector.miz
+
+## /mml/number/structure
+
+- natural.miz
+- integer.miz
+- rational.miz
+- real.miz
+- complex.miz
