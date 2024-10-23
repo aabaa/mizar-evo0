@@ -49,25 +49,25 @@ mml/
 
       :: Inherit all functors and attributes from set.
       :: `it` means `set` itself.
-      :: Sometimes a `field ... inherits ...` syntax requires type conversion.
+      :: Sometimes a `field ... from ...` syntax requires type conversion.
       :: In the case, you have to prove the consistency of the type conversion
       :: with a `correctness` statement.
       :: `cluster` statements might be useful.
-      extend 1-sorted inherits set where
-        field carrier inherits it;
+      inherit 1-sorted from set where
+        field carrier from it;
       end
     end
 
     definition
-      struct UnitStr extends 1-sorted where
+      struct UnitStr where
         field carrier -> set;
         property unit -> Element of the carrier;
       end
 
       :: If some fields or properties of the base structure are not inherited,
       :: the Mizar analyzer will give a error message.
-      extend UnitStr inherits 1-sorted where
-        field carrier inherits carrier;
+      inherit UnitStr from 1-sorted where
+        field carrier from carrier;
       end
     end
 
@@ -77,9 +77,9 @@ mml/
         property zero -> Element of the carrier;
       end
 
-      extend ZeroStr inherits UnitStr where
-        field carrier inherits carrier;
-        property zero inherits unit;
+      inherit ZeroStr from UnitStr where
+        field carrier from carrier;
+        property zero from unit;
       end
     end
 
@@ -89,9 +89,9 @@ mml/
         property one -> Element of the carrier;
       end
 
-      extend OneStr extends UnitStr where
-        field carrier inherits carrier;
-        property one inherits unit;
+      inherit OneStr from UnitStr where
+        field carrier from carrier;
+        property one from unit;
       end
     end
 
@@ -102,14 +102,14 @@ mml/
         property one -> Element of the carrier;
       end
 
-      extend ZeroOneStr inherits ZeroStr where
-        field carrier inherits carrier;
-        property zero inherits zero;
+      inherit ZeroOneStr from ZeroStr where
+        field carrier from carrier;
+        property zero from zero;
       end
 
-      extend ZeroOneStr inherits OneStr where
-        field carrier inherits carrier;
-        property one inherits one;
+      inherit ZeroOneStr from OneStr where
+        field carrier from carrier;
+        property one from one;
       end
     end
 
@@ -119,8 +119,8 @@ mml/
         field carrier' -> set;
       end
 
-      extend 2-sorted inherits 1-sorted where
-        field carrier inherits carrier;
+      inherit 2-sorted from 1-sorted where
+        field carrier from carrier;
       end
     end
     ```
@@ -136,8 +136,8 @@ mml/
         field binop -> BinOp of the carrier;
       end
 
-      extend Magma inherits 1-sorted where
-        field carrier inherits carrier;
+      inherit Magma from 1-sorted where
+        field carrier from carrier;
       end
     end
 
@@ -147,9 +147,9 @@ mml/
         field add -> BinOp of the carrier;
       end
 
-      extend AddMagma inherits Magma where
-        field carrier inherits carrier;
-        field add inherits binop;
+      inherit AddMagma from Magma where
+        field carrier from carrier;
+        field add from binop;
       end
     end
 
@@ -159,9 +159,9 @@ mml/
         field mul -> BinOp of the carrier;
       end
 
-      extend MulMagma inherits Magma where
-        field carrier inherits carrier;
-        field mul inherits binop;
+      inherit MulMagma from Magma where
+        field carrier from carrier;
+        field mul from binop;
       end
     end
 
@@ -179,9 +179,9 @@ mml/
         property unit -> Element of the carrier;
       end
 
-      extend LoopStr inherits Magma where
-        field carrier inherits carrier;
-        field binop inherits binop;
+      inherit LoopStr from Magma where
+        field carrier from carrier;
+        field binop from binop;
       end
       
       ::=
@@ -192,19 +192,19 @@ mml/
       =::
       struct AddLoopStr where
         field carrier -> set;
-        field add inherits binop -> BinOp of the carrier;
-        property one inherits unit -> Element of the carrier;
+        field add from binop -> BinOp of the carrier;
+        property one from unit -> Element of the carrier;
       end
 
-      extend AddLoopStr inherits LoopStr where
-        field carrier inherits carrier;
-        field add inherits binop;
-        property one inherits unit;
+      inherit AddLoopStr from LoopStr where
+        field carrier from carrier;
+        field add from binop;
+        property one from unit;
       end
 
-      extend AddLoopStr inherits AddMagma where
-        field carrier inherits carrier;
-        field add inherits add;
+      inherit AddLoopStr from AddMagma where
+        field carrier from carrier;
+        field add from add;
       end
 
       struct MulLoopStr where
@@ -213,15 +213,15 @@ mml/
         property zero -> Element of the carrier;
       end
 
-      extend MulLoopStr inherits LoopStr where
-        field carrier inherits carrier;
-        field mul inherits binop;
-        property zero inherits unit;
+      inherit MulLoopStr from LoopStr where
+        field carrier from carrier;
+        field mul from binop;
+        property zero from unit;
       end
 
-      extend MulLoopStr inherits MulMagma where
-        field carrier inherits carrier;
-        field mul inherits mul;
+      inherit MulLoopStr from MulMagma where
+        field carrier from carrier;
+        field mul from mul;
       end
 
       struct DoubleLoopStr where
@@ -232,16 +232,16 @@ mml/
         property one -> Element of the carrier;
       end;
 
-      extend DoubleLoopStr inherits AddLoopStr where
-        field carrier inherits carrier;
-        field add inherits add;
-        property zero inherits zero;
+      inherit DoubleLoopStr from AddLoopStr where
+        field carrier from carrier;
+        field add from add;
+        property zero from zero;
       end;
 
-      extend DoubleLoopStr inherits MulLoopStr where
-        field carrier inherits carrier;
-        field mul inherits mul;
-        property one inherits one;
+      inherit DoubleLoopStr from MulLoopStr where
+        field carrier from carrier;
+        field mul from mul;
+        property one from one;
       end;
     end
 
