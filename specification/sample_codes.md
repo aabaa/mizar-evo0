@@ -61,7 +61,7 @@ mml/
     definition
       struct UnitStr where
         field carrier -> set;
-        property unit -> Element of the carrier;
+        property unit -> Element of carrier;
       end
 
       :: If some fields or properties of the base structure are not inherited,
@@ -74,7 +74,7 @@ mml/
     definition
       struct ZeroStr where
         field carrier -> set;
-        property zero -> Element of the carrier;
+        property zero -> Element of carrier;
       end
 
       inherit ZeroStr from UnitStr where
@@ -86,7 +86,7 @@ mml/
     definition
       struct OneStr where
         field carrier -> set;
-        property one -> Element of the carrier;
+        property one -> Element of carrier;
       end
 
       inherit OneStr from UnitStr where
@@ -98,8 +98,8 @@ mml/
     definition
       struct ZeroOneStr where
         field carrier -> set;
-        property zero -> Element of the carrier;
-        property one -> Element of the carrier;
+        property zero -> Element of carrier;
+        property one -> Element of carrier;
       end
 
       inherit ZeroOneStr from ZeroStr where
@@ -133,7 +133,7 @@ mml/
     definition
       struct Magma where
         field carrier -> set;
-        field binop -> BinOp of the carrier;
+        field binop -> BinOp of carrier;
       end
 
       inherit Magma from 1-sorted where
@@ -144,7 +144,7 @@ mml/
     definition
       struct AddMagma where
         field carrier -> set;
-        field add -> BinOp of the carrier;
+        field add -> BinOp of carrier;
       end
 
       inherit AddMagma from Magma where
@@ -156,7 +156,7 @@ mml/
     definition
       struct MulMagma where
         field carrier -> set;
-        field mul -> BinOp of the carrier;
+        field mul -> BinOp of carrier;
       end
 
       inherit MulMagma from Magma where
@@ -175,8 +175,8 @@ mml/
     definition
       struct LoopStr where
         field carrier -> set;
-        field binop -> BinOp of the carrier;
-        property unit -> Element of the carrier;
+        field binop -> BinOp of carrier;
+        property unit -> Element of carrier;
       end
 
       inherit LoopStr from Magma where
@@ -192,14 +192,14 @@ mml/
       =::
       struct AddLoopStr where
         field carrier -> set;
-        field add from binop -> BinOp of the carrier;
-        property one from unit -> Element of the carrier;
+        field add from binop -> BinOp of carrier;
+        property zero from unit -> Element of carrier;
       end
 
       inherit AddLoopStr from LoopStr where
         field carrier from carrier;
         field add from binop;
-        property one from unit;
+        property zero from unit;
       end
 
       inherit AddLoopStr from AddMagma where
@@ -209,14 +209,14 @@ mml/
 
       struct MulLoopStr where
         field carrier -> set;
-        field mul -> BinOp of the carrier;
-        property zero -> Element of the carrier;
+        field mul -> BinOp of carrier;
+        property one -> Element of carrier;
       end
 
       inherit MulLoopStr from LoopStr where
         field carrier from carrier;
         field mul from binop;
-        property zero from unit;
+        property one from unit;
       end
 
       inherit MulLoopStr from MulMagma where
@@ -226,10 +226,10 @@ mml/
 
       struct DoubleLoopStr where
         field carrier -> set;
-        field add -> BinOp of the carrier;
-        field mul -> BinOp of the carrier;
-        property zero -> Element of the carrier;
-        property one -> Element of the carrier;
+        field add -> BinOp of carrier;
+        field mul -> BinOp of carrier;
+        property zero -> Element of carrier;
+        property one -> Element of carrier;
       end;
 
       inherit DoubleLoopStr from AddLoopStr where
