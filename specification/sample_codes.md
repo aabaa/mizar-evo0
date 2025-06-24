@@ -230,32 +230,32 @@ mml/
         field mul -> BinOp of carrier;
         property zero -> Element of carrier;
         property one -> Element of carrier;
-      end;
+      end
 
       inherit DoubleLoopStr from AddLoopStr where
         field carrier from carrier;
         field add from add;
         property zero from zero;
-      end;
+      end
 
       inherit DoubleLoopStr from MulLoopStr where
         field carrier from carrier;
         field mul from mul;
         property one from one;
-      end;
+      end
     end
 
     notation
       let A be AddLoopStr;
       let x,y be Element of AddLoopStr;
       synonym x+y for A.binop(x,y);
-    end;
+    end
 
     notation
       let M be MulLoopStr;
       let x,y be Element of MulLoopStr;
       synonym x*y for M.binop(x,y);
-    end;
+    end
 
     ```
 
