@@ -19,7 +19,7 @@ mml/
     definition
       let X,Y be set;
       mode Function of X,Y is quasi_total PartFunc of X,Y;
-    end
+    end;
     ```
 
 - binop.miz
@@ -31,7 +31,7 @@ mml/
     definition
       let S be 1-sorted;
       mode BinOp of S is Function of [: S.carrier, S.carrier :], S.carrier;
-    end
+    end;
     ```
 
 ## /mml/algebra/structure
@@ -45,7 +45,7 @@ mml/
       :: This grammar rule is specialized for set.
       struct 1-sorted where
         field carrier -> set;
-      end
+      end;
 
       :: Inherit all functors and attributes from set.
       :: `it` means `set` itself.
@@ -55,74 +55,74 @@ mml/
       :: `cluster` statements might be useful.
       inherit 1-sorted from set where
         field carrier from it;
-      end
-    end
+      end;
+    end;
 
     definition
       struct UnitStr where
         field carrier -> set;
         property unit -> Element of carrier;
-      end
+      end;
 
       :: If some fields or properties of the base structure are not inherited,
       :: the Mizar analyzer will give a error message.
       inherit UnitStr from 1-sorted where
         field carrier from carrier;
-      end
-    end
+      end;
+    end;
 
     definition
       struct ZeroStr where
         field carrier -> set;
         property zero -> Element of carrier;
-      end
+      end;
 
       inherit ZeroStr from UnitStr where
         field carrier from carrier;
         property zero from unit;
-      end
-    end
+      end;
+    end;
 
     definition
       struct OneStr where
         field carrier -> set;
         property one -> Element of carrier;
-      end
+      end;
 
       inherit OneStr from UnitStr where
         field carrier from carrier;
         property one from unit;
-      end
-    end
+      end;
+    end;
 
     definition
       struct ZeroOneStr where
         field carrier -> set;
         property zero -> Element of carrier;
         property one -> Element of carrier;
-      end
+      end;
 
       inherit ZeroOneStr from ZeroStr where
         field carrier from carrier;
         property zero from zero;
-      end
+      end;
 
       inherit ZeroOneStr from OneStr where
         field carrier from carrier;
         property one from one;
-      end
-    end
+      end;
+    end;
 
     definition
       struct 2-sorted where
         field carrier -> set;
         field carrier' -> set;
-      end
+      end;
 
       inherit 2-sorted from 1-sorted where
         field carrier from carrier;
-      end
-    end
+      end;
+    end;
     ```
 
 - magma.miz
@@ -134,36 +134,36 @@ mml/
       struct Magma where
         field carrier -> set;
         field binop -> BinOp of carrier;
-      end
+      end;
 
       inherit Magma from 1-sorted where
         field carrier from carrier;
-      end
-    end
+      end;
+    end;
 
     definition
       struct AddMagma where
         field carrier -> set;
         field add -> BinOp of carrier;
-      end
+      end;
 
       inherit AddMagma from Magma where
         field carrier from carrier;
         field add from binop;
-      end
-    end
+      end;
+    end;
 
     definition
       struct MulMagma where
         field carrier -> set;
         field mul -> BinOp of carrier;
-      end
+      end;
 
       inherit MulMagma from Magma where
         field carrier from carrier;
         field mul from binop;
-      end
-    end
+      end;
+    end;
 
     ```
 
@@ -177,12 +177,12 @@ mml/
         field carrier -> set;
         field binop -> BinOp of carrier;
         property unit -> Element of carrier;
-      end
+      end;
 
       inherit LoopStr from Magma where
         field carrier from carrier;
         field binop from binop;
-      end
+      end;
       
       ::=
         The Mizar analyzer must check the consistency for diamond inheritance.
@@ -194,35 +194,35 @@ mml/
         field carrier -> set;
         field add from binop -> BinOp of carrier;
         property zero from unit -> Element of carrier;
-      end
+      end;
 
       inherit AddLoopStr from LoopStr where
         field carrier from carrier;
         field add from binop;
         property zero from unit;
-      end
+      end;
 
       inherit AddLoopStr from AddMagma where
         field carrier from carrier;
         field add from add;
-      end
+      end;
 
       struct MulLoopStr where
         field carrier -> set;
         field mul -> BinOp of carrier;
         property one -> Element of carrier;
-      end
+      end;
 
       inherit MulLoopStr from LoopStr where
         field carrier from carrier;
         field mul from binop;
         property one from unit;
-      end
+      end;
 
       inherit MulLoopStr from MulMagma where
         field carrier from carrier;
         field mul from mul;
-      end
+      end;
 
       struct DoubleLoopStr where
         field carrier -> set;
@@ -230,32 +230,32 @@ mml/
         field mul -> BinOp of carrier;
         property zero -> Element of carrier;
         property one -> Element of carrier;
-      end
+      end;
 
       inherit DoubleLoopStr from AddLoopStr where
         field carrier from carrier;
         field add from add;
         property zero from zero;
-      end
+      end;
 
       inherit DoubleLoopStr from MulLoopStr where
         field carrier from carrier;
         field mul from mul;
         property one from one;
-      end
-    end
+      end;
+    end;
 
     notation
       let A be AddLoopStr;
       let x,y be Element of AddLoopStr;
       synonym x+y for A.binop(x,y);
-    end
+    end;
 
     notation
       let M be MulLoopStr;
       let x,y be Element of MulLoopStr;
       synonym x*y for M.binop(x,y);
-    end
+    end;
 
     ```
 
@@ -285,7 +285,7 @@ mml/
       attr M is commutative means
         for x,y be Element of M holds
         M.binop(x,y) = M.binop(y,x);
-    end
+    end;
 
     definition
       let M be LoopStr;
@@ -301,7 +301,7 @@ mml/
 
       mode M is Group means
       M is non empty associative invertible unital;
-    end
+    end;
     ```
 
 - ring.miz
@@ -318,7 +318,7 @@ mml/
       R.zero <> R.one &
       for x,y,z be Element of R holds
       x * (y+z) = x*y + x*z;
-    end
+    end;
 
     definition
       let R be Ring;
@@ -330,7 +330,7 @@ mml/
       =::
       attr R is commutative means
       (R qua MulLoopStr) is commutative;
-    end
+    end;
     ```
 
 - field.miz
