@@ -1,4 +1,4 @@
-# Redesigning the Mizar System
+# Mizar Evolution
 
 ***Building the Next Generation of Formal Mathematics Environment Using 50 Years of Heritage***
 
@@ -19,3 +19,39 @@ In implementing these changes, we plan to introduce new features gradually, cons
 This redesign will help Mizar evolve into a next-generation formal mathematics environment. It will build on its 50-year heritage while incorporating modern technology and design principles. We expect this to open a new era in formal mathematics and significantly contribute to the advancement of mathematical research and formal methods.
 
 This is the place to discuss future directions for the Mizar language / system / library specifications. We welcome your constructive opinions. Please feel free to participate in the discussion.
+
+## Project Layout
+
+```
+mizar-evo/
+├── README.md
+├── LICENSE
+├── logo/
+│   └── evo0.png
+│
+├── doc/
+│   ├── spec/              ← Language specification (external)
+│   │   ├── 00.index.md
+│   │   ├── 01.introduction.md
+│   │   ├── ...
+│   │   └── 16.theorems_and_proofs.md
+│   │
+│   ├── design/            ← Implementation specification (internal)
+│   │   └── README.md          Maps 1:1 to Rust source files
+│   │
+│   └── idea/              ← Design notes and ideas
+│       ├── algorithm_verification.md
+│       └── property_verification_and_atp.md
+│
+└── crates/                ← Rust workspace (to be created)
+```
+
+### AI-Driven Development
+
+Internal specifications in `doc/design/` map 1:1 to Rust source files:
+
+```
+doc/design/<crate>/<module>.md  →  crates/<crate>/src/<module>.rs
+```
+
+This enables spec-driven implementation where each module can be developed and verified against its specification independently.
