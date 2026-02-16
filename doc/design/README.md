@@ -1,16 +1,35 @@
 # Internal Design Specifications
 
-This directory contains internal implementation specifications that map **1:1** to Rust source files.
+This directory contains internal implementation specifications organized at two levels:
 
-## Convention
+## 1. Architecture Specifications (`architecture/`)
+
+Cross-cutting design documents that span multiple modules or crates.
+These define **subsystem boundaries, protocols, and design decisions** that cannot be captured at the individual module level.
+
+```
+doc/design/architecture/<topic>.md
+```
+
+Typical topics include:
+- Reasoning boundaries (what the kernel handles vs. what ATPs handle)
+- Inter-subsystem communication protocols (TPTP, SMT-LIB)
+- Integration strategies for external tools
+- Proof certificate formats
+
+See [`architecture/README.md`](./architecture/README.md) for details and the document template.
+
+## 2. Module Specifications (`<crate-name>/`)
+
+Detailed specifications that map **1:1** to Rust source files.
 
 ```
 doc/design/<crate-name>/<module>.md  →  crates/<crate-name>/src/<module>.rs
 ```
 
-## Specification Template
+### Module Specification Template
 
-Each internal spec should follow this structure:
+Each module spec should follow this structure:
 
 ```markdown
 # Module: <module_name>
@@ -38,9 +57,23 @@ Expected error conditions and how they are handled.
 Key test scenarios that must pass.
 ```
 
+## Relationship Between Layers
+
+```
+doc/idea/                          Immature ideas, brainstorming
+   ↓  (matured)
+doc/design/architecture/           Confirmed cross-cutting design decisions
+   ↓  (decomposed into modules)
+doc/design/<crate>/<module>.md     Per-file implementation specifications
+   ↓  (implemented)
+crates/<crate>/src/<module>.rs     Rust source code
+```
+
 ## Workflow
 
-1. Write or update the spec in `doc/design/<crate>/<module>.md`
-2. Implement (or ask AI to implement) `crates/<crate>/src/<module>.rs`
-3. Run tests to verify the implementation matches the spec
-4. Keep spec and code in sync — update both together
+1. Start with an idea in `doc/idea/`
+2. When a design decision is confirmed, promote it to `doc/design/architecture/`
+3. Decompose into module-level specs in `doc/design/<crate>/`
+4. Implement (or ask AI to implement) the corresponding Rust source
+5. Run tests to verify the implementation matches the spec
+6. Keep specs and code in sync — update both together

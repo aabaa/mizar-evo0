@@ -34,10 +34,16 @@ mizar-evo/
 │   │   ├── 00.index.md
 │   │   ├── 01.introduction.md
 │   │   ├── ...
-│   │   └── 16.theorems_and_proofs.md
+│   │   └── 17.clusters_and_registrations.md
 │   │
 │   ├── design/            ← Implementation specification (internal)
-│   │   └── README.md          Maps 1:1 to Rust source files
+│   │   ├── README.md
+│   │   ├── architecture/          Cross-cutting design decisions
+│   │   │   ├── README.md
+│   │   │   ├── reasoning_boundary.md
+│   │   │   ├── atp_interface_protocol.md
+│   │   │   └── atp_backend_integration.md
+│   │   └── <crate>/               Maps 1:1 to Rust source files
 │   │
 │   └── idea/              ← Design notes and ideas
 │       ├── algorithm_verification.md
