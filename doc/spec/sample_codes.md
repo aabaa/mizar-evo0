@@ -66,9 +66,7 @@ mml/
 
       :: If some fields or properties of the base structure are not inherited,
       :: the Mizar analyzer will give a error message.
-      inherit UnitStr from 1-sorted where
-        field carrier from carrier;
-      end;
+      inherit UnitStr extends 1-sorted;
     end;
 
     definition
@@ -77,9 +75,9 @@ mml/
         property zero -> Element of carrier;
       end;
 
-      inherit ZeroStr from UnitStr where
+      inherit ZeroStr extends UnitStr where
         field carrier from carrier;
-        property zero from unit;
+        property zero from unit;    :: renamed
       end;
     end;
 
@@ -89,9 +87,9 @@ mml/
         property one -> Element of carrier;
       end;
 
-      inherit OneStr from UnitStr where
+      inherit OneStr extends UnitStr where
         field carrier from carrier;
-        property one from unit;
+        property one from unit;     :: renamed
       end;
     end;
 
@@ -102,15 +100,8 @@ mml/
         property one -> Element of carrier;
       end;
 
-      inherit ZeroOneStr from ZeroStr where
-        field carrier from carrier;
-        property zero from zero;
-      end;
-
-      inherit ZeroOneStr from OneStr where
-        field carrier from carrier;
-        property one from one;
-      end;
+      inherit ZeroOneStr extends ZeroStr;
+      inherit ZeroOneStr extends OneStr;
     end;
 
     definition
@@ -119,9 +110,7 @@ mml/
         field carrier' -> set;
       end;
 
-      inherit 2-sorted from 1-sorted where
-        field carrier from carrier;
-      end;
+      inherit 2-sorted extends 1-sorted;
     end;
     ```
 
@@ -136,9 +125,7 @@ mml/
         field binop -> BinOp of carrier;
       end;
 
-      inherit Magma from 1-sorted where
-        field carrier from carrier;
-      end;
+      inherit Magma extends 1-sorted;
     end;
 
     definition
@@ -147,9 +134,9 @@ mml/
         field add -> BinOp of carrier;
       end;
 
-      inherit AddMagma from Magma where
+      inherit AddMagma extends Magma where
         field carrier from carrier;
-        field add from binop;
+        field add from binop;       :: renamed
       end;
     end;
 
@@ -159,9 +146,9 @@ mml/
         field mul -> BinOp of carrier;
       end;
 
-      inherit MulMagma from Magma where
+      inherit MulMagma extends Magma where
         field carrier from carrier;
-        field mul from binop;
+        field mul from binop;       :: renamed
       end;
     end;
 
@@ -179,10 +166,7 @@ mml/
         property unit -> Element of carrier;
       end;
 
-      inherit LoopStr from Magma where
-        field carrier from carrier;
-        field binop from binop;
-      end;
+      inherit LoopStr extends Magma;
       
       ::=
         The Mizar analyzer must check the consistency for diamond inheritance.
@@ -192,20 +176,17 @@ mml/
       =::
       struct AddLoopStr where
         field carrier -> set;
-        field add from binop -> BinOp of carrier;
-        property zero from unit -> Element of carrier;
+        field add -> BinOp of carrier;
+        property zero -> Element of carrier;
       end;
 
-      inherit AddLoopStr from LoopStr where
+      inherit AddLoopStr extends LoopStr where
         field carrier from carrier;
-        field add from binop;
-        property zero from unit;
+        field add from binop;       :: renamed
+        property zero from unit;    :: renamed
       end;
 
-      inherit AddLoopStr from AddMagma where
-        field carrier from carrier;
-        field add from add;
-      end;
+      inherit AddLoopStr extends AddMagma;
 
       struct MulLoopStr where
         field carrier -> set;
@@ -213,16 +194,13 @@ mml/
         property one -> Element of carrier;
       end;
 
-      inherit MulLoopStr from LoopStr where
+      inherit MulLoopStr extends LoopStr where
         field carrier from carrier;
-        field mul from binop;
-        property one from unit;
+        field mul from binop;       :: renamed
+        property one from unit;     :: renamed
       end;
 
-      inherit MulLoopStr from MulMagma where
-        field carrier from carrier;
-        field mul from mul;
-      end;
+      inherit MulLoopStr extends MulMagma;
 
       struct DoubleLoopStr where
         field carrier -> set;
@@ -232,17 +210,8 @@ mml/
         property one -> Element of carrier;
       end;
 
-      inherit DoubleLoopStr from AddLoopStr where
-        field carrier from carrier;
-        field add from add;
-        property zero from zero;
-      end;
-
-      inherit DoubleLoopStr from MulLoopStr where
-        field carrier from carrier;
-        field mul from mul;
-        property one from one;
-      end;
+      inherit DoubleLoopStr extends AddLoopStr;
+      inherit DoubleLoopStr extends MulLoopStr;
     end;
 
     notation
